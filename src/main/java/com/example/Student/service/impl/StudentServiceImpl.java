@@ -56,19 +56,32 @@ public class StudentServiceImpl implements StudentService {
 
     /**
      * @param studentId
-     * @param studentDto
+     * @param
      * @return
      */
     @Override
-    public StudentDto updateStudent(Long studentId, StudentDto studentDto) {
-        return null;
+    public StudentDto updateStudent(Long studentId, StudentDto updatedStudent) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(()-> new ResourceNotFoundException("Student is not found : " + studentId));
+
+        student.setFirstName(updatedStudent.getFirstName());
+        student.setLastName(updatedStudent.getLastName());
+        student.setAge(updatedStudent.getAge());
+        student.setParentName(updatedStudent.getParentName());
+
+        Student updatedStudentObj = studentRepository.save(student);
+        return StudentMapper.mapToStudentDto(updatedStudentObj);
     }
 
     /**
      * @param studentId
      */
     @Override
-    public void deleteStudent(Long studentId) {
+    public void deleteStudent(Long studentId) {Student student = studentRepository.findById(studentId)
+            .orElseThrow(()-> new ResourceNotFoundException("Student is not found : " + studentId));
+        studentRepository.deleteById(studentId);
 
     }
+
+
 }
