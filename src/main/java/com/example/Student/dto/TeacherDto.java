@@ -18,5 +18,4 @@ public class TeacherDto {
 
     private int age;
 
-    private String parentName;
 }

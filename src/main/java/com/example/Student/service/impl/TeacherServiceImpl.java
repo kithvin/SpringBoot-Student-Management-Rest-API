@@ -7,6 +7,8 @@ import com.example.Student.mapper.TeacherMapper;
 import com.example.Student.repository.TeacherRepository;
 import com.example.Student.service.TeacherService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +21,9 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class TeacherServiceImpl implements TeacherService {
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     private TeacherRepository teacherRepository;
 
@@ -45,7 +50,8 @@ public class TeacherServiceImpl implements TeacherService {
     public TeacherDto getTeacherById(Long teacherId) {
         Teacher teacher = teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new ResourceNotFoundException("Teacher is Not Found :" + teacherId));
-        return TeacherMapper.mapToTeacherDto(teacher);
+//        return TeacherMapper.mapToTeacherDto(teacher);
+        return modelMapper.map(teacherDto,Teacher.class);
     }
 
 
@@ -57,7 +63,6 @@ public class TeacherServiceImpl implements TeacherService {
         teacher.setFirstName(updatedTeacher.getFirstName());
         teacher.setLastName(updatedTeacher.getLastName());
         teacher.setAge(updatedTeacher.getAge());
-        teacher.setParentName(updatedTeacher.getParentName());
 
         Teacher updatedTeacherObj = teacherRepository.save(teacher);
         return TeacherMapper.mapToTeacherDto(teacher);

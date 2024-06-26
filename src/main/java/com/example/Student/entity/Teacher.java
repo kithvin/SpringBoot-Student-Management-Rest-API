@@ -25,6 +25,4 @@ public class Teacher {
 
     private int age;
 
-    private String parentName;
-
 }
